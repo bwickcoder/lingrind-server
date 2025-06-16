@@ -11,13 +11,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const PORT = process.env.PORT || 3001;
 
+app.listen(PORT, () => {
+  console.log(`🟢 Server running on http://localhost:${PORT}`);
+});
 
 // ✅ TRANSLATION ENDPOINT
 app.post("/api/translate", async (req, res) => {
@@ -72,13 +74,8 @@ ${batch.map((c, j) => `${j + 1}. ${c.jp}`).join("\n")}
     }
   }
 
-  // ✅ Final response with all translations
   res.json({ translated: allTranslations });
 });
-
-
-
-
 
 
 // ✅ GENERATE FLASHCARDS FROM VIDEO
@@ -107,5 +104,3 @@ app.post("/api/generate", async (req, res) => {
     res.status(500).json({ error: "Processing failed" });
   }
 });
-
-app.listen(3001, () => console.log("🟢 Server running on http://localhost:3001"));
